@@ -31,6 +31,11 @@ public class SceneManager : MonoBehaviour
         ChangeScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex + 1);
     }
 
+    public void PreviousScene()
+    {
+        ChangeScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex - 1);
+    }
+
     public void ChangeSceneAsync(string sceneName)
     {
         UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName);
@@ -44,6 +49,11 @@ public class SceneManager : MonoBehaviour
     public void NextSceneAsync()
     {
         ChangeSceneAsync(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
+    public void PreviousSceneAsync()
+    {
+        ChangeSceneAsync(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex - 1);
     }
 
     public void ReloadScene()
