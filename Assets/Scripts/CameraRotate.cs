@@ -53,7 +53,7 @@ public class CameraRotate : MonoBehaviour
         else if (Input.GetKey(KeyCode.DownArrow))
             transform.Translate(Vector3.down * amp * Time.fixedDeltaTime);
 
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
         {
             float mouseX = Input.GetAxis("Mouse X");
             float mouseY = Input.GetAxis("Mouse Y");
@@ -76,6 +76,29 @@ public class CameraRotate : MonoBehaviour
                 transform.position += direction * zoomDelta;
             }
         }
+
+        // Zoom with keys
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            float distance = Vector3.Distance(transform.position, target);
+            Vector3 direction = (transform.position - target).normalized;
+            float zoomStep = zoomAmp * Time.fixedDeltaTime;
+
+            // Zoom in with "+" (both main and keypad plus)
+            if (Input.GetKey(KeyCode.Equals) || Input.GetKey(KeyCode.KeypadPlus)) // '=' is used for '+' without shift
+            {
+                if (distance > minDistance)
+                    transform.position -= direction * zoomStep;
+            }
+
+            // Zoom out with "-" (both main and keypad minus)
+            if (Input.GetKey(KeyCode.Minus) || Input.GetKey(KeyCode.KeypadMinus))
+            {
+                if (distance < maxDistance)
+                    transform.position += direction * zoomStep;
+            }
+        }
+
     }
 
     private void Update()
