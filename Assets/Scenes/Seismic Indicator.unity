@@ -1131,7 +1131,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetTransform: {fileID: 626585692}
-  amp: 5
+  arrowAmp: 5
+  mouseAmp: 1
   zoomAmp: 10
   minDistance: 2
   maxDistance: 50

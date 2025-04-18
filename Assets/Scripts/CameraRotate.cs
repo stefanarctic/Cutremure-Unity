@@ -13,7 +13,8 @@ public class CameraRotate : MonoBehaviour
     }
 
     private Vector3 target;
-    public float amp = 5.0f;
+    public float arrowAmp = 5.0f;
+    public float mouseAmp = 5.0f;
     public float zoomAmp = 10.0f;
     public float minDistance = 2.0f;
     public float maxDistance = 50.0f;
@@ -40,26 +41,26 @@ public class CameraRotate : MonoBehaviour
             cameraComponent = GetComponent<Camera>();
     }
 
-    void FixedUpdate()
+    void Update2()
     {
         transform.LookAt(target);
 
         if (Input.GetKey(KeyCode.RightArrow))
-            transform.Translate(Vector3.right * amp * Time.fixedDeltaTime);
+            transform.Translate(Vector3.right * arrowAmp * Time.deltaTime);
         else if (Input.GetKey(KeyCode.LeftArrow))
-            transform.Translate(Vector3.left * amp * Time.fixedDeltaTime);
+            transform.Translate(Vector3.left * arrowAmp * Time.deltaTime);
         else if (Input.GetKey(KeyCode.UpArrow))
-            transform.Translate(Vector3.up * amp * Time.fixedDeltaTime);
+            transform.Translate(Vector3.up * arrowAmp * Time.deltaTime);
         else if (Input.GetKey(KeyCode.DownArrow))
-            transform.Translate(Vector3.down * amp * Time.fixedDeltaTime);
+            transform.Translate(Vector3.down * arrowAmp * Time.deltaTime);
 
         if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
         {
             float mouseX = Input.GetAxis("Mouse X");
             float mouseY = Input.GetAxis("Mouse Y");
 
-            transform.RotateAround(target, Vector3.up, mouseX * amp);
-            transform.RotateAround(target, transform.right, -mouseY * amp);
+            transform.RotateAround(target, Vector3.up, mouseX * mouseAmp);
+            transform.RotateAround(target, transform.right, -mouseY * mouseAmp);
         }
 
         // Zoom with scroll wheel
@@ -69,11 +70,11 @@ public class CameraRotate : MonoBehaviour
             Vector3 direction = (transform.position - target).normalized;
             float distance = Vector3.Distance(transform.position, target);
             float zoomDelta = -scroll * zoomAmp;
+            transform.position += direction * zoomDelta;
 
             // Apply zoom only if within limits
             if ((distance > minDistance || zoomDelta < 0) && (distance < maxDistance || zoomDelta > 0))
             {
-                transform.position += direction * zoomDelta;
             }
         }
 
@@ -82,7 +83,7 @@ public class CameraRotate : MonoBehaviour
         {
             float distance = Vector3.Distance(transform.position, target);
             Vector3 direction = (transform.position - target).normalized;
-            float zoomStep = zoomAmp * Time.fixedDeltaTime;
+            float zoomStep = Time.fixedDeltaTime;
 
             // Zoom in with "+" (both main and keypad plus)
             if (Input.GetKey(KeyCode.Equals) || Input.GetKey(KeyCode.KeypadPlus)) // '=' is used for '+' without shift
@@ -103,6 +104,8 @@ public class CameraRotate : MonoBehaviour
 
     private void Update()
     {
+        Update2();
+
         if (Input.GetKeyDown(KeyCode.D))
             Toggle2DCamera();
 
